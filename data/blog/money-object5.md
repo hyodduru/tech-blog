@@ -1,5 +1,5 @@
 ---
-title: '[테스트 주도 개발] 1-5 솔직히 말하자면'
+title: '[테스트 주도 개발] 1-5 솔직히 말하자면, 1-6 돌아온 모두를 위한 평등'
 date: '2023-06-15'
 tags: ['테스트 주도 개발', 'Test-Driven Development', '화폐 예제']
 draft: false
@@ -63,3 +63,64 @@ class Franc {
 - 뻔뻔스럽게도 중복을 만들고 조금 고쳐서 테스트를 작성했다.
 - 설상가상으로 모델 코드까지 도매금으로 복사하고 수정해서 테스트를 통과했다.
 - 중복이 사라지기 전에는 집에 가지 않겠다고 약속했다.
+
+## 1장 - 6. 돌아온 '모두를 위한 '평등'
+
+### 해결해야 하는 문제
+
+중복 코드 제거하기!
+
+### 시도해볼 수 있는 방법
+
+우리가 만든 클래스 중 하나가 다른 클래스를 상속받게 하는 것
+
+Money라는 클래스가 공통의 equals를 갖는다면 어떨까?
+
+```java
+class Money;
+
+class Dollar extends Money{
+    private int amount;
+}
+```
+
+이제 amount 인스턴스 변수를 Money로 옮겨보자
+
+```java
+class Money {
+    protected int amount
+}
+
+class Dollar extends Money{
+}
+```
+
+이제 equals() 코드를 위로 올려보면,
+
+```java
+// Dollar
+public boolean equals(Object object){
+    Money dollar = (Money) object;
+    return amount == dollar.amount;
+}
+```
+
+임시 변수의 이름도 변경해보자 (원활한 의사소통을 위해)
+
+```java
+// Dollar
+public boolean equals(Object object){
+    Money money = (Money) money;
+    return amount == dollar.amount;
+}
+```
+
+이제 위의 메서드를 Dollar에서 Money로 옮길 수 있다.
+
+이제 Franc.amount() 도 위와 동일한 방식으로 제거해주면 된다.
+
+### 지금까지 한일 정리
+
+- 공통된 코드를 첫 번째 클래스(Dollar)에서 상위 클래스(Money)로 단계적으로 옮김
+- 두 번째 클래스(Franc)도 Money의 하위 클래스로 만듬
+- 불필요한 구현을 제거하기 전에 두 equals()의 구현을 일치시킴
